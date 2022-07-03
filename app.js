@@ -38,16 +38,16 @@ app.use(
   })
 );
 
-//routes
-app.use("/", mainRouter);
-app.use("/auth", authRouter);
+//passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 //middleware
 app.use(express.json());
 
-//passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
+//routes
+app.use("/", mainRouter);
+app.use("/auth", authRouter);
 
 const port = 3000 || process.env.PORT;
 
