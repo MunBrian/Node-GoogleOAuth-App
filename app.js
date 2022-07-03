@@ -7,7 +7,9 @@ const passport = require("passport");
 const session = require("express-session");
 const { engine } = require("express-handlebars");
 const connectDB = require("./config/db");
-const router = require("./routes/index");
+
+const mainRouter = require("./routes/index");
+const authRouter = require("./routes/auth");
 
 //initialize the app
 const app = express();
@@ -27,12 +29,6 @@ app.set("view engine", ".hbs");
 //static folder
 app.use(express.static(path.join(__dirname, "public")));
 
-//routes
-app.use("/", router);
-
-//middleware
-app.use(express.json());
-
 //session middleware
 app.use(
   session({
@@ -42,9 +38,16 @@ app.use(
   })
 );
 
+//routes
+app.use("/", mainRouter);
+app.use("/auth", authRouter);
+
+//middleware
+app.use(express.json());
+
 //passport middleware
-app.use(passport.initialize);
-app.use(passport.session);
+app.use(passport.initialize());
+app.use(passport.session());
 
 const port = 3000 || process.env.PORT;
 
