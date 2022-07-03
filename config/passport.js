@@ -16,19 +16,13 @@ module.exports = (passport) => {
     )
   );
 
-  passport.serializeUser((user, cb) => {
-    process.nextTick(() => {
-      cb(null, {
-        id: user.id,
-        username: user.username,
-        name: user.displayName,
-      });
-    });
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
   });
 
-  passport.deserializeUser((user, cb) => {
-    process.nextTick(() => {
-      return cb(null, user);
+  passport.deserializeUser((id, done) => {
+    User.findById(id, (err, user) => {
+      done(err, user);
     });
   });
 };
