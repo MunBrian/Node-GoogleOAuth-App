@@ -11,6 +11,7 @@ const connectDB = require("./config/db");
 
 const mainRouter = require("./routes/index");
 const authRouter = require("./routes/auth");
+const storiesRouter = require("./routes/stories");
 
 //initialize the app
 const app = express();
@@ -51,6 +52,7 @@ app.use(express.json());
 //routes
 app.use("/", mainRouter);
 app.use("/auth", authRouter);
+app.use("/stories", storiesRouter);
 
 const port = 3000 || process.env.PORT;
 

@@ -15,14 +15,14 @@ router.get("/login", ensureGuest, (req, res) => {
 //@route GET/ dashboard
 router.get("/dashboard", ensureAuth, async (req, res) => {
   try {
-    const stories = await (await Story.find({ user: req.user.id })).lean();
+    const stories = await Story.find({ user: req.user.id }).lean();
     res.render("Dashboard", {
       name: req.user.firstName,
       stories,
     });
   } catch (error) {
     console.log(error);
-    res.render("error/500");
+    res.render("errors/500");
   }
 });
 
