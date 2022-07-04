@@ -16,6 +16,10 @@ const storiesRouter = require("./routes/stories");
 //initialize the app
 const app = express();
 
+// body-parser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 //passport config
 require("./config/passport")(passport);
 
@@ -45,9 +49,6 @@ app.use(
 //passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
-
-//middleware
-app.use(express.json());
 
 //routes
 app.use("/", mainRouter);
