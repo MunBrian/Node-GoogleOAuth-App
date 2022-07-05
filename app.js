@@ -8,6 +8,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const { engine } = require("express-handlebars");
 const connectDB = require("./config/db");
+const methodOverride = require("method-override");
 
 const mainRouter = require("./routes/index");
 const authRouter = require("./routes/auth");
@@ -20,22 +21,40 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+//Method Override
+app.use(
+  methodOverride((req, res) => {
+    if (req.body && typeof req.body === "object" && "_method" in req.body) {
+      // look in urlencoded POST bodies and delete it
+      let method = req.body._method;
+      delete req.body._method;
+      return method;
+    }
+  })
+);
+
 //passport config
 require("./config/passport")(passport);
 
-//show request using morgan in dev
+//show request using morgan only during dev
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
 //Handlebars Helpers
-const { formatDate, truncate, stripTags, editIcon } = require("./helpers/hbs");
+const {
+  formatDate,
+  truncate,
+  stripTags,
+  editIcon,
+  select,
+} = require("./helpers/hbs");
 
 //Handlebars
 app.engine(
   ".hbs",
   engine({
-    helpers: { formatDate, truncate, stripTags, editIcon },
+    helpers: { formatDate, truncate, stripTags, editIcon, select },
     extname: ".hbs",
   })
 );
