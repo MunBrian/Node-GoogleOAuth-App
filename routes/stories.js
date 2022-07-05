@@ -10,7 +10,7 @@ const {
   addStory,
   deleteStory,
   updateStory,
-} = require("../controllers/storiesContoller");
+} = require("../controllers/storiesController");
 
 //@route GET /stories/add
 router.get("/add", ensureAuth, getStoryAddPage);

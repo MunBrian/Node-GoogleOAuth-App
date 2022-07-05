@@ -4,7 +4,7 @@ const {
   getGoogleAuth,
   getGoogleCallBack,
   logoutUser,
-} = require("../controllers/authContoller");
+} = require("../controllers/authController");
 
 //@route GET /auth/google
 router.get("/google", getGoogleAuth);

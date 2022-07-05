@@ -1,4 +1,5 @@
 const Story = require("../models/StoryModel");
+const asyncHandler = require("express-async-handler");
 
 //@desc Login/Landing Page
 const getLoginPage = (req, res) => {
@@ -8,18 +9,18 @@ const getLoginPage = (req, res) => {
 };
 
 //@desc Dashboard page
-const getDashboardPage = async (req, res) => {
-  try {
-    const stories = await Story.find({ user: req.user.id }).lean();
-    res.render("Dashboard", {
-      name: req.user.firstName,
-      stories,
-    });
-  } catch (error) {
-    console.log(error);
-    res.render("errors/500");
+const getDashboardPage = asyncHandler(async (req, res) => {
+  const stories = await Story.find({ user: req.user.id }).lean();
+
+  if (!stories) {
+    return res.render("errors/500");
   }
-};
+
+  res.render("Dashboard", {
+    name: req.user.firstName,
+    stories,
+  });
+});
 
 module.exports = {
   getLoginPage,
